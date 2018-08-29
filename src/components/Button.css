@@ -1,0 +1,43 @@
+.Button {
+  --padding: 8px;
+  --font-size: inherit;
+
+  background-color: var(--color-shade);
+  color: #444;
+  font-size: var(--font-size);
+  padding: var(--padding);
+  border: none;
+  border-radius: 5px;
+  transition: 0.1s;
+
+  margin-right: 10px;
+}
+
+.Button.Button_only-icon {
+  padding: 0;
+  text-align: center;
+  line-height: 2em;
+  width: 2em;
+  height: 2em;
+}
+
+.Button.Button_small {
+  --padding: 6px;
+  --font-size: 0.8em;
+}
+
+.Button:hover {
+  background-color: var(--color-shade-dark);
+  cursor: pointer;
+  color: black;
+}
+
+.Button_icon {
+  font-size: smaller;
+  line-height: 1em;
+  margin-right: 7px;
+}
+
+.Button_icon.Button_only-icon {
+  margin-right: 0;
+}

@@ -1,0 +1,36 @@
+.App {
+  max-width: 680px;
+  padding: 10px;
+  margin: 0 auto;
+  margin-top: 25px;
+}
+
+.App_error {
+  background-color: var(--color-danger);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.App_error-message {
+  color: white;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.App_error-message button {
+  background: none;
+  margin-top: 20px;
+  cursor: pointer;
+  padding: 5px;
+  font-size: inherit;
+  border: 1px solid white;
+  border-radius: 3px;
+  color: inherit;
+}
+
+.App_error-message button:hover {
+  background-color: white;
+  color: black;
+}

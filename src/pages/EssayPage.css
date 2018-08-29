@@ -1,0 +1,7 @@
+.EssayPage_title {
+  margin: 30px auto;
+}
+
+.EssayPage_loading {
+  color: var(--color-shade-dark);
+}

@@ -1,0 +1,32 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Helvetica', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+  text-decoration-color: var(--color-shade-text);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  font-weight: normal;
+}
+
+:root {
+  --color-primary: #f4dc42;
+  --color-shade: #ddd;
+  --color-shade-dark: #bbb;
+  --color-shade-text: #999;
+  --color-danger: #f25a02;
+}
