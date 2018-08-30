@@ -105,7 +105,7 @@ class EssayPage extends React.Component {
     });
 
     return (
-      <div>
+      <div className="EssayPage">
         <ButtonLink to="/" icon={<Fa icon={faArrowLeft} />} />
         {loading && <Loading loading={loading} />}
         {!loading && (
