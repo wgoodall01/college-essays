@@ -28,6 +28,10 @@
   --pad: 4px;
 }
 
+.Editable.Editable_no-border {
+  border: none !important;
+}
+
 .Editable.Editable_shade {
   background-color: var(--color-shade);
 }

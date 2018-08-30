@@ -1,0 +1,43 @@
+.Toggle {
+  transition: 0.3s;
+}
+
+.Toggle_open {
+  margin-bottom: 10px;
+  border-radius: 10px;
+}
+
+.Toggle_open .Toggle_label {
+  margin-bottom: 4px;
+  border-radius: 5px;
+  display: block;
+}
+
+.Toggle_closed {
+  display: inline-block;
+}
+
+.Toggle_label {
+  display: inline-block;
+  color: var(--color-shade-text);
+  background-color: var(--color-shade);
+  font-size: 13px;
+  line-height: 13px;
+  padding: 5px;
+  padding-right: 10px;
+  border-radius: 5px;
+  transition: 0.1s;
+}
+
+.Toggle_closed .Toggle_label {
+  --spacing: 10px;
+
+  margin-right: var(--spacing);
+  margin-bottom: var(--spacing);
+}
+
+.Toggle_label:hover {
+  background-color: var(--color-shade-dark);
+  color: black;
+  cursor: pointer;
+}

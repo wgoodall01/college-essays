@@ -9,6 +9,7 @@ import en from 'javascript-time-ago/locale/en';
 import {ButtonLink} from '../components/Button.js';
 import Shade from '../components/Shade.js';
 import Loading from '../components/Loading.js';
+import Toggle from '../components/Toggle.js';
 import {Helmet} from 'react-helmet';
 
 import './EssayPage.css';
@@ -27,7 +28,7 @@ class EssayPage extends React.Component {
     this.timeAgo = new TimeAgo('en-US');
   }
 
-  static _fieldsToUpdate = ['Name', 'Essay', '_updated'];
+  static _fieldsToUpdate = ['Name', 'Essay', 'Prompt', 'Brainstorming', '_updated'];
 
   static propTypes = {
     // airtable connector, readonly flag
@@ -118,7 +119,28 @@ class EssayPage extends React.Component {
             <h1 className="EssayPage_title">
               <Input outset {...bindField('Name')} readOnly={readOnly} />
             </h1>
-            <Textarea outset placeholder="Once upon a time..." {...bindField('Essay')} />
+            {essay['Tags'] &&
+              essay['Tags'].length &&
+              essay['Tags'][0] !== null && (
+                <div className="EssayPage_tags">
+                  <Shade>
+                    tags:{' '}
+                    {essay['Tags']
+                      .join(', ') /*this is NOT POINTLESS*/
+                      .split(', ')
+                      .sort()
+                      .filter((v, i, a) => a.indexOf(v) === i)
+                      .join(', ')}
+                  </Shade>
+                </div>
+              )}
+            <Toggle label="Prompt">
+              <Textarea placeholder="What to do?" {...bindField('Prompt')} />
+            </Toggle>
+            <Toggle label="Brainstorming">
+              <Textarea placeholder="Put some good ideas here" {...bindField('Brainstorming')} />
+            </Toggle>
+            <Textarea noBorder outset placeholder="Once upon a time..." {...bindField('Essay')} />
             {essay['Essay'] && (
               <Shade>{(this.state.essay['Essay'] || '').trim().split(/\s+/).length} words</Shade>
             )}

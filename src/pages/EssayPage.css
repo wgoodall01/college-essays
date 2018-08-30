@@ -1,3 +1,7 @@
 .EssayPage_title {
-  margin: 20px 0;
+  margin-top: 20px;
+}
+
+.EssayPage_tags {
+  margin-bottom: 10px;
 }

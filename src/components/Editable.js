@@ -15,7 +15,8 @@ export class Textarea extends React.Component {
     readOnly: PropTypes.bool,
     value: PropTypes.string,
     outset: PropTypes.bool,
-    shade: PropTypes.bool
+    shade: PropTypes.bool,
+    noBorder: PropTypes.bool
   };
 
   componentDidMount() {
@@ -32,11 +33,16 @@ export class Textarea extends React.Component {
     if (this.props.onChange) {
       this.props.onChange(e);
     }
-    this._resize();
+    // this._resize();
   };
 
   render() {
-    const {onChange, className, value, outset, shade, ...rest} = this.props;
+    const {onChange, className, value, outset, shade, noBorder, ...rest} = this.props;
+
+    if (this.textarea.current) {
+      this._resize();
+    }
+
     return (
       <textarea
         ref={this.textarea}
@@ -45,6 +51,7 @@ export class Textarea extends React.Component {
           'Editable_textarea',
           {Editable_outset: outset},
           {Editable_shade: shade},
+          {'Editable_no-border': noBorder},
           className
         )}
         value={value}
@@ -56,13 +63,14 @@ export class Textarea extends React.Component {
   }
 }
 
-export const Input = ({className, shade, outset, small, ...rest}) => (
+export const Input = ({className, shade, outset, small, noBorder, ...rest}) => (
   <input
     className={classnames(
       'Editable Editable_input',
       {Editable_small: small},
       {Editable_outset: outset},
       {Editable_shade: shade},
+      {'Editable_no-border': noBorder},
       className
     )}
     {...rest}
@@ -76,5 +84,6 @@ Input.propTypes = {
   onChange: PropTypes.func,
   small: PropTypes.bool,
   shade: PropTypes.bool,
-  outset: PropTypes.bool
+  outset: PropTypes.bool,
+  noBorder: PropTypes.bool
 };

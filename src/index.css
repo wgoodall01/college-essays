@@ -30,7 +30,7 @@ h6 {
   --color-primary: #f4dc42;
   --color-shade: #eee;
   --color-shade-dark: #bbb;
-  --color-shade-text: #999;
+  --color-shade-text: #676767;
   --color-danger: #f25a02;
 
   text-decoration-color: var(--color-shade-dark);
