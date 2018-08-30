@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
 import {Route, Switch} from 'react-router';
-import {AirtableProvider, AirtableConsumer} from './Airtable.js';
+import {AirtableConnector} from './Airtable.js';
 import {pick} from 'lodash-es';
+import {Helmet} from 'react-helmet';
 import './App.css';
 
 import EssayPage from '../pages/EssayPage.js';
+import ListPage from '../pages/ListPage.js';
 import NotFoundPage from '../pages/NotFoundPage.js';
 
 const LOCALSTORAGE_KEY = 'airtable-auth';
@@ -89,21 +91,21 @@ class App extends Component {
 
     return (
       <div className="App">
-        <AirtableProvider baseId={baseId} apiKey={apiKey} readOnly={readOnly}>
-          <Switch>
-            <Route
-              path="/essay/:id"
-              children={({match}) => (
-                <AirtableConsumer
-                  children={({base, readOnly}) => (
-                    <EssayPage base={base} readOnly={readOnly} essayId={match.params.id} />
-                  )}
-                />
-              )}
-            />
-            <Route path="*" component={NotFoundPage} />
-          </Switch>
-        </AirtableProvider>
+        <Helmet titleTemplate="%s | College Essays" />
+        <AirtableConnector baseId={baseId} apiKey={apiKey} readOnly={readOnly}>
+          {({base}) => (
+            <Switch>
+              <Route path="/" exact children={() => <ListPage base={base} />} />
+              <Route
+                path="/essay/:id"
+                children={({match}) => (
+                  <EssayPage base={base} readOnly={readOnly} essayId={match.params.id} />
+                )}
+              />
+              <Route path="*" component={NotFoundPage} />
+            </Switch>
+          )}
+        </AirtableConnector>
       </div>
     );
   }

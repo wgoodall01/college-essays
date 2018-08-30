@@ -1,13 +1,31 @@
 .Editable {
+  --offset: 0px;
+  --pad: 10px;
+
   border: none;
   font-family: inherit;
   font-size: inherit;
-  width: calc(100% + 30px);
-  padding: 15px;
-  margin: -15px;
+
+  /* calculate outset border and padding */
+  width: calc(100% + 2 * var(--offset));
+  margin: calc(-1 * var(--offset));
+  padding: calc(var(--pad) + var(--offset));
+
   border-radius: 5px;
   transition: 0.2s;
+
   background-color: transparent;
+  border: 1px solid transparent;
+}
+
+.Editable.Editable_outset {
+  --offset: 15px;
+  --pad: 0px;
+}
+
+.Editable.Editable_small {
+  --offset: 0px;
+  --pad: 4px;
 }
 
 .Editable_textarea {
@@ -16,9 +34,10 @@
   overflow: hidden;
   display: block;
   padding-bottom: 20px;
+  border: 1px solid var(--color-shade);
 }
 
 .Editable:focus {
   outline: none;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--color-shade-dark);
 }

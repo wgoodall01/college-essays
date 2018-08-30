@@ -1,0 +1,38 @@
+.ListPage_filter-bar {
+  margin-top: 10px;
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.ListPage_filter {
+  margin-left: 10px;
+  border: none;
+  font-size: inherit;
+  width: 100%;
+  padding: 5px;
+}
+
+.ListPage_filter:focus {
+  outline: none;
+}
+
+.ListPage_filter::placeholder {
+  color: var(--color-shade-text);
+}
+
+.ListPage_item {
+  border-bottom: 1px solid var(--color-shade);
+}
+
+.ListPage_item p,
+.ListPage_item h2 {
+  margin: 15px 0;
+}
+
+.ListPage_item p {
+  height: 5em;
+  overflow: hidden;
+  mask-image: linear-gradient(to top, transparent, rgba(0, 0, 0, 0.2) 20%, black 60%, black);
+}

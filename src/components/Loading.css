@@ -1,0 +1,14 @@
+.Loading {
+  color: var(--color-shade-dark);
+  margin-top: 0.5em;
+  animation: Loading_fadein 1s;
+}
+
+@keyframes Loading_fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

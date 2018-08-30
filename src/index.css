@@ -2,6 +2,9 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Helvetica', sans-serif;
+
+  /* center ignoring scrollbar */
+  padding-left: calc(100vw - 100%);
 }
 
 * {
@@ -25,7 +28,7 @@ h6 {
 
 :root {
   --color-primary: #f4dc42;
-  --color-shade: #ddd;
+  --color-shade: #eee;
   --color-shade-dark: #bbb;
   --color-shade-text: #999;
   --color-danger: #f25a02;

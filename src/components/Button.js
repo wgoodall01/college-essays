@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import {Link} from 'react-router-dom';
 
 import './Button.css';
 
-const Button = ({icon, small, className, children, ...rest}) => (
+export const Button = ({icon, small, className, children, ...rest}) => (
   <button
     className={classnames(
       'Button',
@@ -17,6 +18,21 @@ const Button = ({icon, small, className, children, ...rest}) => (
     <span className={classnames('Button_icon', {'Button_only-icon': !children})}>{icon}</span>
     {children}
   </button>
+);
+
+export const ButtonLink = ({icon, small, className, children, ...rest}) => (
+  <Link
+    className={classnames(
+      'Button',
+      {Button_small: small},
+      {'Button_only-icon': !children},
+      className
+    )}
+    {...rest}
+  >
+    <span className={classnames('Button_icon', {'Button_only-icon': !children})}>{icon}</span>
+    {children}
+  </Link>
 );
 
 Button.propTypes = {

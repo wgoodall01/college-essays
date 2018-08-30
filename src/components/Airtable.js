@@ -12,7 +12,7 @@ const hashObject = obj =>
 
 const {Provider, Consumer} = React.createContext();
 
-export class AirtableProvider extends React.Component {
+export class AirtableConnector extends React.Component {
   state = {
     base: null, // airtable base
     hash: null // hash of all important props, used to re-initialize airtable.
@@ -22,7 +22,7 @@ export class AirtableProvider extends React.Component {
     baseId: PropTypes.string.isRequired,
     apiKey: PropTypes.string.isRequired,
     readOnly: PropTypes.bool.isRequired,
-    children: PropTypes.element
+    children: PropTypes.func
   };
 
   static getDerivedStateFromProps(props, state) {
@@ -47,16 +47,22 @@ export class AirtableProvider extends React.Component {
   }
 
   render() {
-    const {readOnly, children} = this.props;
+    const {readOnly, baseId, children: renderFunc} = this.props;
     const {hash, base} = this.state;
 
     // use a keyed fragment to re-render everything
-    return (
-      <React.Fragment key={hash}>
-        <Provider value={{base, readOnly}}>{children}</Provider>
-      </React.Fragment>
-    );
+    return renderFunc({base, readOnly, hash, baseId});
   }
 }
+
+export const AirtableProvider = ({children, ...rest}) => (
+  <AirtableConnector {...rest}>
+    {value => (
+      <Provider key={value.hash} value={value}>
+        {children}
+      </Provider>
+    )}
+  </AirtableConnector>
+);
 
 export const AirtableConsumer = Consumer;
