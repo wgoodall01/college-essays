@@ -1,0 +1,12 @@
+.Header {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+
+  color: var(--color-shade-dark);
+  text-decoration-color: var(--color-shade-dark);
+}
+
+.Header a {
+  margin-left: 10px;
+}

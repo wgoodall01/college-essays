@@ -8,8 +8,11 @@ import './App.css';
 import EssayPage from '../pages/EssayPage.js';
 import ListPage from '../pages/ListPage.js';
 import LoginPage from '../pages/LoginPage.js';
+import LogoutPage from '../pages/LogoutPage.js';
 import AccessPage from '../pages/AccessPage.js';
 import NotFoundPage from '../pages/NotFoundPage.js';
+
+import Header from '../components/Header.js';
 
 class App extends Component {
   constructor(props) {
@@ -45,6 +48,16 @@ class App extends Component {
     };
     this.setState(auth);
     window.localStorage.setItem(App._localstorageKey, JSON.stringify(pick(auth, App._authKeys)));
+  };
+
+  _removeAuth = () => {
+    console.log('<App/>: removing auth');
+    this.setState({
+      readKey: null,
+      writeKey: null,
+      baseId: null
+    });
+    window.localStorage.removeItem(App._localstorageKey);
   };
 
   componentDidCatch(error) {
@@ -95,7 +108,6 @@ class App extends Component {
                 slug={match.params.slug}
                 match={match}
                 location={location}
-                redirect={match.params.redirect}
                 updateAuth={this._updateAuth}
               />
             )}
@@ -106,27 +118,34 @@ class App extends Component {
             </Switch>
           )}
           {authenticated && (
-            <AirtableConnector baseId={baseId} apiKey={apiKey} readOnly={readOnly}>
-              {({base}) => (
-                <Switch>
-                  {readOnly && (
-                    <Route
-                      path="/login"
-                      children={() => <LoginPage onSubmit={this._updateAuth} />}
-                    />
-                  )}
-                  {!readOnly && <Route path="/login" children={() => <Redirect to="/" />} />}
-                  <Route path="/" exact children={() => <ListPage base={base} />} />
-                  <Route
-                    path="/essay/:id"
-                    children={({match}) => (
-                      <EssayPage base={base} readOnly={readOnly} essayId={match.params.id} />
+            <React.Fragment>
+              <Header baseId={baseId} readKey={readKey} logOut={this._removeAuth} />
+              <AirtableConnector baseId={baseId} apiKey={apiKey} readOnly={readOnly}>
+                {({base}) => (
+                  <Switch>
+                    {readOnly && (
+                      <Route
+                        path="/login"
+                        children={() => <LoginPage onSubmit={this._updateAuth} />}
+                      />
                     )}
-                  />
-                  <Route path="*" component={NotFoundPage} />
-                </Switch>
-              )}
-            </AirtableConnector>
+                    {!readOnly && <Route path="/login" children={() => <Redirect to="/" />} />}
+                    <Route path="/" exact children={() => <ListPage base={base} />} />
+                    <Route
+                      path="/essay/:id"
+                      children={({match}) => (
+                        <EssayPage base={base} readOnly={readOnly} essayId={match.params.id} />
+                      )}
+                    />
+                    <Route
+                      path="/logout"
+                      children={() => <LogoutPage logOut={this._removeAuth} />}
+                    />
+                    <Route path="*" component={NotFoundPage} />
+                  </Switch>
+                )}
+              </AirtableConnector>
+            </React.Fragment>
           )}
         </Switch>
       </div>

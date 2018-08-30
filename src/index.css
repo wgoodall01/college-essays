@@ -13,7 +13,7 @@ body {
 
 a {
   color: inherit;
-  text-decoration-color: var(--color-shade-text);
+  text-decoration-color: inherit;
 }
 
 h1,
@@ -32,4 +32,6 @@ h6 {
   --color-shade-dark: #bbb;
   --color-shade-text: #999;
   --color-danger: #f25a02;
+
+  text-decoration-color: var(--color-shade-dark);
 }
