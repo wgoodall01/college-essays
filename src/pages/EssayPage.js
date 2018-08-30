@@ -97,6 +97,12 @@ class EssayPage extends React.Component {
     const {readOnly} = this.props;
     const {loading, essay} = this.state;
 
+    const bindField = key => ({
+      value: essay[key],
+      onChange: e => this._setEssayState(key, e.target.value),
+      readOnly
+    });
+
     return (
       <div>
         <ButtonLink to="/" icon={<Fa icon={faArrowLeft} />} />
@@ -110,20 +116,9 @@ class EssayPage extends React.Component {
               <Shade>last updated {this.timeAgo.format(new Date(essay._updated))}</Shade>
             )}
             <h1 className="EssayPage_title">
-              <Input
-                value={essay['Name']}
-                outset
-                readOnly={readOnly}
-                onChange={e => this._setEssayState('Name', e.target.value)}
-              />
+              <Input outset {...bindField('Name')} readOnly={readOnly} />
             </h1>
-            <Textarea
-              value={essay['Essay']}
-              readOnly={readOnly}
-              outset
-              placeholder="Once upon a time..."
-              onChange={e => this._setEssayState('Essay', e.target.value)}
-            />
+            <Textarea outset placeholder="Once upon a time..." {...bindField('Essay')} />
           </React.Fragment>
         )}
       </div>

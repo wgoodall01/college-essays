@@ -1,0 +1,13 @@
+.LoginPage_header {
+  margin-bottom: 30px;
+}
+
+.LoginPage_control {
+  display: block;
+  max-width: 300px;
+  margin-bottom: 30px;
+}
+
+.LoginPage_control > div {
+  margin-bottom: 8px;
+}

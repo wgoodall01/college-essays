@@ -10,6 +10,7 @@
   border: none;
   border-radius: 5px;
   transition: 0.1s;
+  cursor: pointer;
 
   margin-right: 10px;
 }
@@ -29,8 +30,14 @@
 
 .Button:hover {
   background-color: var(--color-shade-dark);
-  cursor: pointer;
   color: black;
+}
+
+.Button:disabled {
+  background-color: white;
+  border: 1px solid var(--color-shade);
+  color: var(--color-shade-dark);
+  cursor: not-allowed;
 }
 
 .Button_icon {

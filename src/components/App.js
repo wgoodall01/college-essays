@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Route, Switch} from 'react-router';
+import {Route, Redirect, Switch} from 'react-router';
 import {AirtableConnector} from './Airtable.js';
 import {pick} from 'lodash-es';
 import {Helmet} from 'react-helmet';
@@ -7,10 +7,9 @@ import './App.css';
 
 import EssayPage from '../pages/EssayPage.js';
 import ListPage from '../pages/ListPage.js';
+import LoginPage from '../pages/LoginPage.js';
+import AccessPage from '../pages/AccessPage.js';
 import NotFoundPage from '../pages/NotFoundPage.js';
-
-const LOCALSTORAGE_KEY = 'airtable-auth';
-const LOCALSTORAGE_ITEMS = ['readKey', 'writeKey', 'baseId', 'tableName'];
 
 class App extends Component {
   constructor(props) {
@@ -22,9 +21,9 @@ class App extends Component {
       writeKey: null,
       baseId: null
     };
-    const cachedAuthJson = window.localStorage.getItem(LOCALSTORAGE_KEY);
+    const cachedAuthJson = window.localStorage.getItem(App._localstorageKey);
     if (cachedAuthJson !== null && cachedAuthJson.length !== 0) {
-      cachedAuth = {...cachedAuth, ...pick(JSON.parse(cachedAuthJson), LOCALSTORAGE_ITEMS)};
+      cachedAuth = {...cachedAuth, ...pick(JSON.parse(cachedAuthJson), App._authKeys)};
       console.log('<App/>: load auth from localStorage:', cachedAuth);
     }
 
@@ -35,12 +34,17 @@ class App extends Component {
     };
   }
 
+  static _localstorageKey = 'airtable-auth';
+  static _authKeys = ['readKey', 'writeKey', 'baseId'];
+
   _updateAuth = auth => {
-    document.localStorage.setItem(
-      LOCALSTORAGE_KEY,
-      JSON.stringify(pick(this.state, LOCALSTORAGE_ITEMS))
-    );
+    console.log('<App/>: update auth with:', auth);
+    auth = {
+      ...pick(this.state, App._authKeys),
+      ...pick(auth, App._authKeys)
+    };
     this.setState(auth);
+    window.localStorage.setItem(App._localstorageKey, JSON.stringify(pick(auth, App._authKeys)));
   };
 
   componentDidCatch(error) {
@@ -80,32 +84,51 @@ class App extends Component {
       authenticated = false;
     }
 
-    if (!authenticated) {
-      return (
-        <div className="App">
-          <h1>Login</h1>
-          <div>some stuff goes here in the future</div>
-        </div>
-      );
-    }
-
     return (
       <div className="App">
         <Helmet titleTemplate="%s | College Essays" />
-        <AirtableConnector baseId={baseId} apiKey={apiKey} readOnly={readOnly}>
-          {({base}) => (
-            <Switch>
-              <Route path="/" exact children={() => <ListPage base={base} />} />
-              <Route
-                path="/essay/:id"
-                children={({match}) => (
-                  <EssayPage base={base} readOnly={readOnly} essayId={match.params.id} />
-                )}
+        <Switch>
+          <Route
+            path="/access/:slug/"
+            children={({match, location}) => (
+              <AccessPage
+                slug={match.params.slug}
+                match={match}
+                location={location}
+                redirect={match.params.redirect}
+                updateAuth={this._updateAuth}
               />
-              <Route path="*" component={NotFoundPage} />
+            )}
+          />
+          {!authenticated && (
+            <Switch>
+              <Route path="*" children={() => <LoginPage onSubmit={this._updateAuth} />} />
             </Switch>
           )}
-        </AirtableConnector>
+          {authenticated && (
+            <AirtableConnector baseId={baseId} apiKey={apiKey} readOnly={readOnly}>
+              {({base}) => (
+                <Switch>
+                  {readOnly && (
+                    <Route
+                      path="/login"
+                      children={() => <LoginPage onSubmit={this._updateAuth} />}
+                    />
+                  )}
+                  {!readOnly && <Route path="/login" children={() => <Redirect to="/" />} />}
+                  <Route path="/" exact children={() => <ListPage base={base} />} />
+                  <Route
+                    path="/essay/:id"
+                    children={({match}) => (
+                      <EssayPage base={base} readOnly={readOnly} essayId={match.params.id} />
+                    )}
+                  />
+                  <Route path="*" component={NotFoundPage} />
+                </Switch>
+              )}
+            </AirtableConnector>
+          )}
+        </Switch>
       </div>
     );
   }

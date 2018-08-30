@@ -14,7 +14,8 @@ export class Textarea extends React.Component {
     className: PropTypes.string,
     readOnly: PropTypes.bool,
     value: PropTypes.string,
-    outset: PropTypes.bool
+    outset: PropTypes.bool,
+    shade: PropTypes.bool
   };
 
   componentDidMount() {
@@ -35,7 +36,7 @@ export class Textarea extends React.Component {
   };
 
   render() {
-    const {onChange, className, readOnly, value, outset, ...rest} = this.props;
+    const {onChange, className, value, outset, shade, ...rest} = this.props;
     return (
       <textarea
         ref={this.textarea}
@@ -43,6 +44,7 @@ export class Textarea extends React.Component {
           'Editable',
           'Editable_textarea',
           {Editable_outset: outset},
+          {Editable_shade: shade},
           className
         )}
         value={value}
@@ -54,12 +56,13 @@ export class Textarea extends React.Component {
   }
 }
 
-export const Input = ({className, outset, small, readOnly, ...rest}) => (
+export const Input = ({className, shade, outset, small, ...rest}) => (
   <input
     className={classnames(
       'Editable Editable_input',
       {Editable_small: small},
       {Editable_outset: outset},
+      {Editable_shade: shade},
       className
     )}
     {...rest}
@@ -71,5 +74,7 @@ Input.propTypes = {
   readOnly: PropTypes.bool,
   value: PropTypes.string,
   onChange: PropTypes.func,
-  small: PropTypes.bool
+  small: PropTypes.bool,
+  shade: PropTypes.bool,
+  outset: PropTypes.bool
 };
