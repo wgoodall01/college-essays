@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Redirect} from 'react-router';
 
-const AccessPage = ({slug, redirect, match, location, updateAuth}) => {
+const AccessPage = ({slug, match, location, updateAuth}) => {
   // Slug format:
   // readKey,baseId
 
@@ -24,6 +24,13 @@ const AccessPage = ({slug, redirect, match, location, updateAuth}) => {
   updateAuth({readKey, baseId});
 
   return <Redirect to={urlRest} />;
+};
+
+AccessPage.propTypes = {
+  slug: PropTypes.string.isRequired,
+  match: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
+  updateAuth: PropTypes.func.isRequired
 };
 
 export default AccessPage;

@@ -33,8 +33,6 @@ class LoginPage extends React.Component {
   _canSubmit = () => this.state.baseId.length > 5 && this.state.writeKey.length > 5;
 
   render() {
-    const {readKey, writeKey, baseId} = this.state;
-
     return (
       <form onSubmit={this._submit}>
         <h1 className="LoginPage_header">Sign In to College Essays</h1>
