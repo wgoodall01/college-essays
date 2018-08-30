@@ -75,7 +75,6 @@ class ListPage extends React.Component {
           <input
             className="ListPage_filter"
             placeholder="Filter..."
-            autoFocus
             value={filter}
             onChange={e => this.setState({filter: e.target.value})}
           />
