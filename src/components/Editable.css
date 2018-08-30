@@ -8,7 +8,7 @@
 
   /* calculate outset border and padding */
   width: calc(100% + 2 * var(--offset));
-  margin: calc(-1 * var(--offset));
+  margin: 0 calc(-1 * var(--offset));
   padding: calc(var(--pad) + var(--offset));
 
   border-radius: 5px;
@@ -39,6 +39,7 @@
   display: block;
   padding-bottom: 20px;
   border: 1px solid var(--color-shade);
+  margin-bottom: var(--offset);
 }
 
 .Editable:focus {

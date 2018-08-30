@@ -119,6 +119,9 @@ class EssayPage extends React.Component {
               <Input outset {...bindField('Name')} readOnly={readOnly} />
             </h1>
             <Textarea outset placeholder="Once upon a time..." {...bindField('Essay')} />
+            {essay['Essay'] && (
+              <Shade>{(this.state.essay['Essay'] || '').trim().split(/\s+/).length} words</Shade>
+            )}
           </React.Fragment>
         )}
       </div>
