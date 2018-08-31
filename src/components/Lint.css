@@ -1,0 +1,18 @@
+.Lint {
+  color: var(--color-shade-text);
+  list-style-type: none;
+  padding: 0;
+}
+
+.Lint_item {
+  margin-bottom: 3px;
+}
+
+.Lint_item:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.Lint_text {
+  color: black;
+}

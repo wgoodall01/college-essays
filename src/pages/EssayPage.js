@@ -10,6 +10,7 @@ import {ButtonLink} from '../components/Button.js';
 import Shade from '../components/Shade.js';
 import Loading from '../components/Loading.js';
 import Toggle from '../components/Toggle.js';
+import Lint from '../components/Lint.js';
 import {Helmet} from 'react-helmet';
 
 import './EssayPage.css';
@@ -20,6 +21,7 @@ class EssayPage extends React.Component {
     this.state = {
       essay: null,
       loading: true,
+      weakSelection: [0, 0], // weak selection in essay
       dirty: false
     };
 
@@ -96,7 +98,7 @@ class EssayPage extends React.Component {
 
   render() {
     const {readOnly} = this.props;
-    const {loading, essay} = this.state;
+    const {loading, essay, weakSelection} = this.state;
 
     const bindField = key => ({
       value: essay[key],
@@ -140,7 +142,22 @@ class EssayPage extends React.Component {
             <Toggle label="Brainstorming">
               <Textarea placeholder="Put some good ideas here" {...bindField('Brainstorming')} />
             </Toggle>
-            <Textarea noBorder outset placeholder="Once upon a time..." {...bindField('Essay')} />
+            <Toggle label="Lint">
+              <Lint
+                className="EssayPage_lint-results"
+                text={essay['Essay']}
+                onHighlight={error =>
+                  this.setState({weakSelection: [error.index, error.index + error.offset]})
+                }
+              />
+            </Toggle>
+            <Textarea
+              noBorder
+              outset
+              placeholder="Once upon a time..."
+              {...bindField('Essay')}
+              weakSelection={weakSelection}
+            />
             {essay['Essay'] && (
               <Shade>{(this.state.essay['Essay'] || '').trim().split(/\s+/).length} words</Shade>
             )}

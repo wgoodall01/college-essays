@@ -13,6 +13,7 @@ export class Textarea extends React.Component {
   static propTypes = {
     onChange: PropTypes.func,
     className: PropTypes.string,
+    weakSelection: PropTypes.arrayOf(PropTypes.number),
     readOnly: PropTypes.bool,
     value: PropTypes.string,
     outset: PropTypes.bool,
@@ -22,6 +23,16 @@ export class Textarea extends React.Component {
 
   componentDidMount() {
     this._resize();
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    const {weakSelection} = this.props;
+    const el = this.textarea.current;
+    if (prevProps.weakSelection !== this.props.weakSelection && el) {
+      el.selectionStart = weakSelection[0];
+      el.selectionEnd = weakSelection[1];
+      el.focus();
+    }
   }
 
   _resize = () => {
@@ -47,7 +58,16 @@ export class Textarea extends React.Component {
   };
 
   render() {
-    const {onChange, className, value, outset, shade, noBorder, ...rest} = this.props;
+    const {
+      onChange,
+      className,
+      value,
+      outset,
+      shade,
+      noBorder,
+      weakSelection,
+      ...rest
+    } = this.props;
 
     if (this.textarea.current) {
       this._resize();
