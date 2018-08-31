@@ -10,9 +10,16 @@ class Toggle extends React.Component {
     open: false
   };
 
+  static propTypes = {
+    children: PropTypes.node,
+    label: PropTypes.node,
+    open: PropTypes.bool,
+    onToggle: PropTypes.func
+  };
+
   render() {
     const {children, label, open: openProp, onToggle} = this.props;
-    const open = this.props.open || this.state.open;
+    const open = openProp || this.state.open;
 
     return (
       <div className={classnames('Toggle', {Toggle_open: open, Toggle_closed: !open})} open={open}>

@@ -31,7 +31,6 @@ export class Textarea extends React.Component {
     const scrollParent = getScrollParent(el);
     const oldContainerScroll = scrollParent.scrollTop;
 
-    const oldHeight = parseInt(el.style.height);
     el.style.height = 'auto';
     const newHeight = el.scrollHeight;
     el.style.height = newHeight + 'px';
