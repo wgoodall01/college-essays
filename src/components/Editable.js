@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import './Editable.css';
+import getScrollParent from '../lib/getScrollParent.js';
 
 export class Textarea extends React.Component {
   constructor(props) {
@@ -25,8 +26,18 @@ export class Textarea extends React.Component {
 
   _resize = () => {
     const el = this.textarea.current;
+
+    // store scroll of parent element, so we can reposition it later.
+    const scrollParent = getScrollParent(el);
+    const oldContainerScroll = scrollParent.scrollTop;
+
+    const oldHeight = parseInt(el.style.height);
     el.style.height = 'auto';
-    el.style.height = el.scrollHeight + 'px';
+    const newHeight = el.scrollHeight;
+    el.style.height = newHeight + 'px';
+
+    // re-scroll parent, adding any extra height if needed.
+    scrollParent.scrollTop = oldContainerScroll;
   };
 
   _onInput = e => {
