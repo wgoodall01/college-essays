@@ -119,21 +119,19 @@ class EssayPage extends React.Component {
             <h1 className="EssayPage_title">
               <Input outset {...bindField('Name')} readOnly={readOnly} />
             </h1>
-            {essay['Tags'] &&
-              essay['Tags'].length &&
-              essay['Tags'][0] !== null && (
-                <div className="EssayPage_tags">
-                  <Shade>
-                    tags:{' '}
-                    {essay['Tags']
-                      .join(', ') /*this is NOT POINTLESS*/
-                      .split(', ')
-                      .sort()
-                      .filter((v, i, a) => a.indexOf(v) === i)
-                      .join(', ')}
-                  </Shade>
-                </div>
-              )}
+            {!!(essay['Tags'] && essay['Tags'].length && essay['Tags'][0] !== null) && (
+              <div className="EssayPage_tags">
+                <Shade>
+                  tags:{' '}
+                  {essay['Tags']
+                    .join(', ') /*this is NOT POINTLESS*/
+                    .split(', ')
+                    .sort()
+                    .filter((v, i, a) => a.indexOf(v) === i)
+                    .join(', ')}
+                </Shade>
+              </div>
+            )}
             <Toggle label="Prompt">
               <Textarea placeholder="What to do?" {...bindField('Prompt')} />
             </Toggle>
