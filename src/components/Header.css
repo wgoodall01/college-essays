@@ -11,3 +11,9 @@
 .Header a {
   margin-left: 10px;
 }
+
+@media print {
+  .Header {
+    display: none;
+  }
+}

@@ -34,3 +34,9 @@
   background-color: white;
   color: black;
 }
+
+@media print {
+  .App {
+    max-width: none;
+  }
+}

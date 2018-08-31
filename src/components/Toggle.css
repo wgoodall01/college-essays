@@ -36,6 +36,12 @@
   margin-bottom: var(--spacing);
 }
 
+@media print {
+  .Toggle_closed {
+    display: none;
+  }
+}
+
 .Toggle_label:hover {
   background-color: var(--color-shade-dark);
   color: black;

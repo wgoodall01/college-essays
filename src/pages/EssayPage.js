@@ -106,7 +106,7 @@ class EssayPage extends React.Component {
 
     return (
       <div className="EssayPage">
-        <ButtonLink to="/" icon={<Fa icon={faArrowLeft} />} />
+        <ButtonLink className="EssayPage_hide-print" to="/" icon={<Fa icon={faArrowLeft} />} />
         {loading && <Loading loading={loading} />}
         {!loading && (
           <React.Fragment>
@@ -114,7 +114,9 @@ class EssayPage extends React.Component {
               <title>{essay['Name']}</title>
             </Helmet>
             {essay._updated && (
-              <Shade>last updated {this.timeAgo.format(new Date(essay._updated))}</Shade>
+              <Shade className="EssayPage_hide-print">
+                last updated {this.timeAgo.format(new Date(essay._updated))}
+              </Shade>
             )}
             <h1 className="EssayPage_title">
               <Input outset {...bindField('Name')} readOnly={readOnly} />
@@ -140,7 +142,9 @@ class EssayPage extends React.Component {
             </Toggle>
             <Textarea noBorder outset placeholder="Once upon a time..." {...bindField('Essay')} />
             {essay['Essay'] && (
-              <Shade>{(this.state.essay['Essay'] || '').trim().split(/\s+/).length} words</Shade>
+              <Shade className="EssayPage_hide-print">
+                {(this.state.essay['Essay'] || '').trim().split(/\s+/).length} words
+              </Shade>
             )}
           </React.Fragment>
         )}

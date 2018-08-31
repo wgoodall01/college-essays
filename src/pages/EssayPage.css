@@ -9,3 +9,12 @@
 .EssayPage_tags {
   margin-bottom: 10px;
 }
+
+@media print {
+  .EssayPage {
+    margin-bottom: 0;
+  }
+  .EssayPage_hide-print {
+    display: none;
+  }
+}

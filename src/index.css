@@ -7,6 +7,16 @@ body {
   padding-left: calc(100vw - 100%);
 }
 
+@media print {
+  body {
+    font-size: 12px;
+  }
+
+  @page {
+    margin: 1in 1.5in;
+  }
+}
+
 * {
   box-sizing: border-box;
 }
