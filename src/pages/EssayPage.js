@@ -142,9 +142,7 @@ class EssayPage extends React.Component {
             </Toggle>
             <Textarea noBorder outset placeholder="Once upon a time..." {...bindField('Essay')} />
             {essay['Essay'] && (
-              <Shade className="EssayPage_hide-print">
-                {(this.state.essay['Essay'] || '').trim().split(/\s+/).length} words
-              </Shade>
+              <Shade>{(this.state.essay['Essay'] || '').trim().split(/\s+/).length} words</Shade>
             )}
           </React.Fragment>
         )}
