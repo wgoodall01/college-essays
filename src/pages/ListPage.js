@@ -42,7 +42,9 @@ class ListPage extends React.Component {
   _fetchEssays = async () => {
     const {base} = this.props;
     const res = await base('Writing')
-      .select()
+      .select({
+        sort: [{field: '_updated', direction: 'desc'}, {field: 'Name', direction: 'asc'}]
+      })
       .all();
     this.setState({loading: false, essays: res});
   };
