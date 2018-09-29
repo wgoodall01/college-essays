@@ -79,10 +79,9 @@ class EssayPage extends React.Component {
       // updated timestamp
       const timestamp = new Date();
       saveEssay._updated = timestamp.toISOString();
-      this.setState(state => ({essay: {...state.essay, _updated: timestamp}}));
 
       await base('Writing').update(essayId, saveEssay);
-      this.setState({dirty: false});
+      this.setState(state => ({dirty: false, essay: {...state.essay, _updated: timestamp}}));
       console.log('<EssayPage/>: saved essay', {id: essayId, obj: saveEssay});
     } else {
       throw new Error('<EssayPage/>: _scheduleSave() called when readOnly=true');
@@ -116,7 +115,7 @@ class EssayPage extends React.Component {
               <title>{essay['Name']}</title>
             </Helmet>
             {essay._updated && (
-              <Shade className="EssayPage_hide-print">
+              <Shade className="EssayPage_hide-print" title={new Date(essay._updated)}>
                 last updated {this.timeAgo.format(new Date(essay._updated))}
               </Shade>
             )}
