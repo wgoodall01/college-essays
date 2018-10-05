@@ -10,6 +10,22 @@
   margin-bottom: 10px;
 }
 
+.EssayPage_sticky-extras {
+  position: sticky;
+  top: 0px;
+  padding-top: 8px;
+  margin-top: -8px;
+  background: white;
+  overflow: auto;
+}
+
+.EssayPage_extra {
+  float: right;
+  margin-right: 5px;
+  line-height: 13px;
+  padding-top: 5px;
+}
+
 .EssayPage_lint-results {
   margin-top: 0;
   padding: 1em;

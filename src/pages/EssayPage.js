@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {Textarea, Input} from '../components/Editable.js';
 import {throttle, pick} from 'lodash-es';
 import {FontAwesomeIcon as Fa} from '@fortawesome/react-fontawesome';
-import {faArrowLeft} from '@fortawesome/free-solid-svg-icons';
+import {faArrowLeft, faThumbtack, faUnlock} from '@fortawesome/free-solid-svg-icons';
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
 import {ButtonLink} from '../components/Button.js';
@@ -12,6 +12,8 @@ import Loading from '../components/Loading.js';
 import Toggle from '../components/Toggle.js';
 import Lint from '../components/Lint.js';
 import {Helmet} from 'react-helmet';
+import classnames from 'classnames';
+import Button from '../components/Button.js';
 
 import './EssayPage.css';
 
@@ -21,6 +23,7 @@ class EssayPage extends React.Component {
     this.state = {
       essay: null,
       loading: true,
+      pinExtras: false,
       weakSelection: [0, 0], // weak selection in essay
       dirty: false
     };
@@ -97,7 +100,7 @@ class EssayPage extends React.Component {
 
   render() {
     const {readOnly} = this.props;
-    const {loading, essay, weakSelection} = this.state;
+    const {pinExtras, loading, essay, weakSelection} = this.state;
 
     const bindField = key => ({
       value: essay[key],
@@ -122,34 +125,36 @@ class EssayPage extends React.Component {
             <h1 className="EssayPage_title">
               <Input outset {...bindField('Name')} readOnly={readOnly} />
             </h1>
-            {!!(essay['Tags'] && essay['Tags'].length && essay['Tags'][0] !== null) && (
-              <div className="EssayPage_tags">
-                <Shade>
-                  tags:{' '}
-                  {essay['Tags']
-                    .join(', ') /*this is NOT POINTLESS*/
-                    .split(', ')
-                    .sort()
-                    .filter((v, i, a) => a.indexOf(v) === i)
-                    .join(', ')}
+            <div className={classnames({'EssayPage_sticky-extras': pinExtras})}>
+              <Toggle label="Prompt">
+                <Textarea placeholder="What to do?" {...bindField('Prompt')} />
+              </Toggle>
+              <Toggle label="Brainstorming">
+                <Textarea placeholder="Put some good ideas here" {...bindField('Brainstorming')} />
+              </Toggle>
+              <Toggle label="Lint">
+                <Lint
+                  className="EssayPage_lint-results"
+                  text={essay['Essay']}
+                  onHighlight={error =>
+                    this.setState({weakSelection: [error.index, error.index + error.offset]})
+                  }
+                />
+              </Toggle>
+              <Button
+                small
+                className="EssayPage_extra"
+                onClick={() => this.setState(s => ({pinExtras: !s.pinExtras}))}
+              >
+                <Fa fixedWidth icon={pinExtras ? faUnlock : faThumbtack} />
+              </Button>
+
+              {essay['Essay'] && (
+                <Shade className="EssayPage_extra">
+                  {(this.state.essay['Essay'] || '').trim().split(/\s+/).length} words
                 </Shade>
-              </div>
-            )}
-            <Toggle label="Prompt">
-              <Textarea placeholder="What to do?" {...bindField('Prompt')} />
-            </Toggle>
-            <Toggle label="Brainstorming">
-              <Textarea placeholder="Put some good ideas here" {...bindField('Brainstorming')} />
-            </Toggle>
-            <Toggle label="Lint">
-              <Lint
-                className="EssayPage_lint-results"
-                text={essay['Essay']}
-                onHighlight={error =>
-                  this.setState({weakSelection: [error.index, error.index + error.offset]})
-                }
-              />
-            </Toggle>
+              )}
+            </div>
             <Textarea
               noBorder
               outset
@@ -157,9 +162,6 @@ class EssayPage extends React.Component {
               {...bindField('Essay')}
               weakSelection={weakSelection}
             />
-            {essay['Essay'] && (
-              <Shade>{(this.state.essay['Essay'] || '').trim().split(/\s+/).length} words</Shade>
-            )}
           </React.Fragment>
         )}
       </div>
