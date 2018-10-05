@@ -11,6 +11,7 @@ import Shade from '../components/Shade.js';
 import Loading from '../components/Loading.js';
 import Toggle from '../components/Toggle.js';
 import Lint from '../components/Lint.js';
+import Attachments from '../components/Attachments.js';
 import {Helmet} from 'react-helmet';
 import classnames from 'classnames';
 import Button from '../components/Button.js';
@@ -132,6 +133,11 @@ class EssayPage extends React.Component {
               <Toggle label="Brainstorming">
                 <Textarea placeholder="Put some good ideas here" {...bindField('Brainstorming')} />
               </Toggle>
+              {essay['Attachments'] && (
+                <Toggle label="Attachments">
+                  <Attachments files={essay['Attachments']} />
+                </Toggle>
+              )}
               <Toggle label="Lint">
                 <Lint
                   className="EssayPage_lint-results"

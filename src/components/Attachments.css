@@ -1,0 +1,38 @@
+.Attachments {
+  padding-top: -10px;
+}
+
+.Attachments_attachment {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 10px;
+  text-decoration: none;
+}
+
+.Attachments_attachment:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.Attachments_name {
+  display: inline-block;
+  margin-left: 20px;
+}
+
+.Attachments_thumb {
+  border-radius: 5px;
+  background-color: var(--color-shade);
+  border: 1px solid var(--color-shade);
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Attachments_thumb img {
+  width: 100%;
+}
