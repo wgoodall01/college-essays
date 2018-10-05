@@ -149,7 +149,7 @@ class EssayPage extends React.Component {
               </Toggle>
               <Button
                 small
-                className="EssayPage_extra"
+                className="EssayPage_extra EssayPage_hide-print"
                 onClick={() => this.setState(s => ({pinExtras: !s.pinExtras}))}
               >
                 <Fa fixedWidth icon={pinExtras ? faUnlock : faThumbtack} />
