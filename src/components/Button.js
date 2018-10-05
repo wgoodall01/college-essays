@@ -5,12 +5,13 @@ import {Link} from 'react-router-dom';
 
 import './Button.css';
 
-export const Button = ({el, icon, small, className, children, ...rest}) => {
+export const Button = ({el, icon, right, small, className, children, ...rest}) => {
   const Container = el || 'button';
   return (
     <Container
       className={classnames(
         'Button',
+        {Button_right: right},
         {Button_small: small},
         {'Button_only-icon': !children},
         className

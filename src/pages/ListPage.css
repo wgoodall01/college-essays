@@ -1,6 +1,5 @@
 .ListPage_filter-bar {
-  margin-top: 10px;
-  margin-bottom: 30px;
+  flex: 1;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -10,6 +9,13 @@
   .ListPage_filter-bar {
     display: none;
   }
+}
+
+.ListPage_tools {
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+  margin-bottom: 30px;
 }
 
 .ListPage_filter {

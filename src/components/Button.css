@@ -15,6 +15,11 @@
   margin-right: 10px;
 }
 
+.Button.Button_right {
+  margin-right: 0;
+  margin-left: 10px;
+}
+
 .Button.Button_only-icon {
   padding: 0;
   text-align: center;

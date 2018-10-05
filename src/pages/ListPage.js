@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Loading from '../components/Loading.js';
 import Shade from '../components/Shade.js';
 import ClearLink from '../components/ClearLink.js';
+import ExportButton from '../components/ExportButton.js';
 import {FontAwesomeIcon as Fa} from '@fortawesome/react-fontawesome';
 import {faSearch} from '@fortawesome/free-solid-svg-icons';
 import './ListPage.css';
@@ -72,14 +73,17 @@ class ListPage extends React.Component {
     return (
       <div>
         <h1>Essays</h1>
-        <div className="ListPage_filter-bar">
-          <Fa icon={faSearch} color="var(--color-shade-text)" />
-          <input
-            className="ListPage_filter"
-            placeholder="Filter..."
-            value={filter}
-            onChange={e => this.setState({filter: e.target.value})}
-          />
+        <div className="ListPage_tools">
+          <div className="ListPage_filter-bar">
+            <Fa icon={faSearch} color="var(--color-shade-text)" />
+            <input
+              className="ListPage_filter"
+              placeholder="Filter..."
+              value={filter}
+              onChange={e => this.setState({filter: e.target.value})}
+            />
+          </div>
+          <ExportButton essays={essays}>Export All</ExportButton>
         </div>
         {loading && <Loading />}
         {!loading && (
