@@ -10,18 +10,18 @@ class ExportButton extends React.Component {
   };
 
   _onClick = async () => {
-    const {essays} = this.props;
+    const {base} = this.props;
     this.setState({exporting: true});
 
     const {generate, save} = await import('../lib/export.js');
-    const file = await generate({essays});
+    const file = await generate({base});
     await save(file, 'CollegeEssays.html');
 
     this.setState({exporting: false});
   };
 
   static propTypes = {
-    essays: PropTypes.array.isRequired
+    base: PropTypes.func.isRequired
   };
 
   render() {

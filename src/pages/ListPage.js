@@ -55,6 +55,7 @@ class ListPage extends React.Component {
   }
 
   render() {
+    const {base} = this.props;
     const {essays, loading, filter} = this.state;
 
     const EssayCard = ({fields, id}) => (
@@ -83,7 +84,7 @@ class ListPage extends React.Component {
               onChange={e => this.setState({filter: e.target.value})}
             />
           </div>
-          <ExportButton essays={essays}>Export All</ExportButton>
+          <ExportButton base={base}>Export All</ExportButton>
         </div>
         {loading && <Loading />}
         {!loading && (

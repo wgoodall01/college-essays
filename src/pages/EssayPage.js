@@ -14,6 +14,7 @@ import Lint from '../components/Lint.js';
 import Attachments from '../components/Attachments.js';
 import {Helmet} from 'react-helmet';
 import classnames from 'classnames';
+import {getRequirements} from '../lib/db.js';
 import Button from '../components/Button.js';
 
 import './EssayPage.css';
@@ -23,7 +24,8 @@ class EssayPage extends React.Component {
     super(props);
     this.state = {
       essay: null,
-      loading: true,
+      requirements: null, // async loaded after essay
+      loading: true, // essay is loading?
       pinExtras: false,
       weakSelection: [0, 0], // weak selection in essay
       dirty: false
@@ -47,7 +49,10 @@ class EssayPage extends React.Component {
 
   async componentDidMount() {
     // Fetch the essay
-    this._fetchEssay();
+    await this._fetchEssay();
+
+    // Fetch the requirements (in the background)
+    this._fetchRequirements();
 
     // Update the 'last saved' text periodically.
     this.updateInterval = setInterval(() => {
@@ -73,6 +78,15 @@ class EssayPage extends React.Component {
     const res = await base('Writing').find(essayId);
     this.setState({loading: false, essay: res.fields, dirty: false});
     console.log('<EssayPage/>: fetched essay', essayId);
+  };
+
+  _fetchRequirements = async () => {
+    // Ugly n+1 query because Airtable doesn't have joins.
+    const {base} = this.props;
+    const {essay} = this.state;
+    const requirements = essay['Required By'];
+
+    this.setState({requirements: await getRequirements(base, essay)});
   };
 
   // Save record max once every 1.5s.
@@ -101,7 +115,7 @@ class EssayPage extends React.Component {
 
   render() {
     const {readOnly} = this.props;
-    const {pinExtras, loading, essay, weakSelection} = this.state;
+    const {pinExtras, loading, essay, requirements, weakSelection} = this.state;
 
     const bindField = key => ({
       value: essay[key],
@@ -132,6 +146,11 @@ class EssayPage extends React.Component {
               </Toggle>
               <Toggle label="Brainstorming">
                 <Textarea placeholder="Put some good ideas here" {...bindField('Brainstorming')} />
+              </Toggle>
+              <Toggle label="For">
+                <ul>
+                  {requirements && requirements.map(e => <li key={e.id}>{e.fields['Name']}</li>)}
+                </ul>
               </Toggle>
               {essay['Attachments'] && (
                 <Toggle label="Attachments">

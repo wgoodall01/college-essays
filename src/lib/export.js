@@ -1,6 +1,7 @@
 import React from 'react';
 import saveAs from 'file-saver';
 import {renderToStaticMarkup} from 'react-dom/server';
+import {getRequirements} from './db.js';
 
 // This makes Word insert a page break.
 const PageBreak = () => <br style={{pageBreakBefore: 'always'}} />;
@@ -55,6 +56,16 @@ const Essay = ({essay}) => (
   <React.Fragment>
     <h1>{essay['Name']}</h1>
 
+    {essay._requirements.length > 0 && (
+      <InfoBox name="Written for">
+        <ul>
+          {essay._requirements.map((req, i) => (
+            <li key={req.id}>{req.fields['Name']}</li>
+          ))}
+        </ul>
+      </InfoBox>
+    )}
+
     {essay['Prompt'] && (
       <InfoBox name="Prompt">
         <Paragraph>{essay['Prompt']}</Paragraph>
@@ -93,11 +104,24 @@ const pageStyles = {
   lineHeight: '1.3em'
 };
 
-export async function generate({essays, date}) {
+export async function generate({base, date}) {
+  // Fetch all essays
+  const essays = await base('Writing')
+    .select({
+      sort: [{field: '_updated', direction: 'desc'}, {field: 'Name', direction: 'asc'}]
+    })
+    .all();
+
+  // ...then fetch their requirements, adding to a _requirements key
+  // really nasty n+1 query.
+  for (let essay of essays) {
+    essay.fields._requirements = await getRequirements(base, essay.fields);
+  }
+
   const report = (
     <html>
       <head>
-        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+        <meta httpEquiv="Content-Type" content="text/html;charset=utf-8" />
         <title>College Essays</title>
       </head>
       <body style={pageStyles}>
