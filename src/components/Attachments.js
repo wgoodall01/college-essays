@@ -14,7 +14,7 @@ const Attachments = ({files}) => {
           rel="noopener noreferrer"
         >
           <span className="Attachments_thumb">
-            <img src={f.thumbnails.small.url} alt="" />
+            <img src={f.thumbnails && f.thumbnails.small.url} alt="" />
           </span>
           <span className="Attachments_name">{f.filename}</span>
         </a>
