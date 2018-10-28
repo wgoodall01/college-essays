@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Button from '../components/Button.js';
+import Shade from '../components/Shade.js';
 import {FontAwesomeIcon as Fa} from '@fortawesome/react-fontawesome';
 import {faFileDownload, faCircleNotch} from '@fortawesome/free-solid-svg-icons';
 import {pick} from 'lodash-es';
@@ -15,8 +16,8 @@ class ExportButton extends React.Component {
     // various export options, passed as generate({parts})
     written_for: true,
     prompt: true,
-    brainstorming: true,
-    attachments: true
+    brainstorming: false,
+    attachments: false
   };
 
   _onExport = async () => {
@@ -84,6 +85,11 @@ class ExportButton extends React.Component {
               <Checkbox keyName="prompt" label="Show Prompt" />
               <Checkbox keyName="brainstorming" label="Show Brainstorming" />
               <Checkbox keyName="attachments" label="Show Attachments" />
+              <Shade>
+                <p>
+                  <i>Note: this will only export essays marked as 'Active' in Airtable.</i>
+                </p>
+              </Shade>
               <Button
                 className="ExportButton_button"
                 onClick={this._onExport}

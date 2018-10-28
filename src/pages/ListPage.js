@@ -6,6 +6,7 @@ import ClearLink from '../components/ClearLink.js';
 import ExportButton from '../components/ExportButton.js';
 import {FontAwesomeIcon as Fa} from '@fortawesome/react-fontawesome';
 import {faSearch} from '@fortawesome/free-solid-svg-icons';
+import {getEssays} from '../lib/db.js';
 import './ListPage.css';
 
 const filterPredicate = (filter, text) => {
@@ -42,11 +43,7 @@ class ListPage extends React.Component {
 
   _fetchEssays = async () => {
     const {base} = this.props;
-    const res = await base('Writing')
-      .select({
-        sort: [{field: '_updated', direction: 'desc'}, {field: 'Name', direction: 'asc'}]
-      })
-      .all();
+    const res = await getEssays(base);
     this.setState({loading: false, essays: res});
   };
 

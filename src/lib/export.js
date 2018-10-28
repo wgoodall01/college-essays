@@ -1,6 +1,7 @@
 import React from 'react';
 import saveAs from 'file-saver';
 import {renderToStaticMarkup} from 'react-dom/server';
+import {getEssays} from './db.js';
 
 // This makes Word insert a page break.
 const PageBreak = () => <br style={{pageBreakBefore: 'always'}} />;
@@ -107,17 +108,13 @@ const pageStyles = {
   lineHeight: '1.5em'
 };
 
-export async function generate({base, date, parts}) {
+export async function generate({base, date, parts, filterActive}) {
   // base: airtable base
   // date: Date object for timestamp
   // parts: {written_for:bool, prompt:bool, brainstorming:bool, attachments:bool}
 
   // Fetch all essays
-  const essays = await base('Writing')
-    .select({
-      sort: [{field: '_updated', direction: 'desc'}, {field: 'Name', direction: 'asc'}]
-    })
-    .all();
+  const essays = await getEssays(base);
 
   // Fetch all requirements
   const deliverables = await base('Deliverables')
