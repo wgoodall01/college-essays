@@ -101,7 +101,7 @@ class ExportButton extends React.Component {
                   )
                 }
               >
-                Export Essays
+                Export to .html
               </Button>
             </div>
           </div>

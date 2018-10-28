@@ -2,6 +2,7 @@ import React from 'react';
 import saveAs from 'file-saver';
 import {renderToStaticMarkup} from 'react-dom/server';
 import {getEssays} from './db.js';
+import {wordCount} from './wordCount.js';
 
 // This makes Word insert a page break.
 const PageBreak = () => <br style={{pageBreakBefore: 'always'}} />;
@@ -97,6 +98,8 @@ const Essay = ({essay, parts}) => (
     <div style={{marginTop: '20px'}}>
       <Paragraph>{essay['Essay']}</Paragraph>
     </div>
+
+    <div style={{color: '#555555'}}>{wordCount(essay['Essay'])} words</div>
 
     <PageBreak />
   </React.Fragment>

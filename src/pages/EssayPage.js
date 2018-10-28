@@ -15,6 +15,7 @@ import Attachments from '../components/Attachments.js';
 import {Helmet} from 'react-helmet';
 import classnames from 'classnames';
 import {getRequirements} from '../lib/db.js';
+import {wordCount} from '../lib/wordCount.js';
 import Button from '../components/Button.js';
 
 import './EssayPage.css';
@@ -175,7 +176,7 @@ class EssayPage extends React.Component {
 
               {essay['Essay'] && (
                 <Shade className="EssayPage_extra">
-                  {(this.state.essay['Essay'] || '').trim().split(/\s+/).length} words
+                  {wordCount(this.state.essay['Essay'] || '')} words
                 </Shade>
               )}
             </div>
