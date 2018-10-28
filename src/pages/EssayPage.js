@@ -84,7 +84,6 @@ class EssayPage extends React.Component {
     // Ugly n+1 query because Airtable doesn't have joins.
     const {base} = this.props;
     const {essay} = this.state;
-    const requirements = essay['Required By'];
 
     this.setState({requirements: await getRequirements(base, essay)});
   };
