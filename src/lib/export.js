@@ -1,7 +1,6 @@
 import React from 'react';
 import saveAs from 'file-saver';
 import {renderToStaticMarkup} from 'react-dom/server';
-import {getRequirements} from './db.js';
 
 // This makes Word insert a page break.
 const PageBreak = () => <br style={{pageBreakBefore: 'always'}} />;
@@ -52,43 +51,47 @@ const InfoBox = ({children, name}) => (
   </React.Fragment>
 );
 
-const Essay = ({essay}) => (
+const Essay = ({essay, parts}) => (
   <React.Fragment>
     <h1>{essay['Name']}</h1>
 
-    {essay._requirements.length > 0 && (
-      <InfoBox name="Written for">
-        <ul>
-          {essay._requirements.map((req, i) => (
-            <li key={req.id}>{req.fields['Name']}</li>
-          ))}
-        </ul>
-      </InfoBox>
-    )}
+    {essay._requirements.length > 0 &&
+      parts.written_for && (
+        <InfoBox name="Written for">
+          <ul>
+            {essay._requirements.map((req, i) => (
+              <li key={req.id}>{req.fields['Name']}</li>
+            ))}
+          </ul>
+        </InfoBox>
+      )}
 
-    {essay['Prompt'] && (
-      <InfoBox name="Prompt">
-        <Paragraph>{essay['Prompt']}</Paragraph>
-      </InfoBox>
-    )}
+    {essay['Prompt'] &&
+      parts.prompt && (
+        <InfoBox name="Prompt">
+          <Paragraph>{essay['Prompt']}</Paragraph>
+        </InfoBox>
+      )}
 
-    {essay['Brainstorming'] && (
-      <InfoBox name="Brainstorming">
-        <Paragraph>{essay['Brainstorming']}</Paragraph>
-      </InfoBox>
-    )}
+    {essay['Brainstorming'] &&
+      parts.brainstorming && (
+        <InfoBox name="Brainstorming">
+          <Paragraph>{essay['Brainstorming']}</Paragraph>
+        </InfoBox>
+      )}
 
-    {essay['Attachments'] && (
-      <InfoBox name="Attachments">
-        <ul>
-          {essay['Attachments'].map((a, i) => (
-            <li key={i}>
-              <a href={a.url}>{a.filename}</a>
-            </li>
-          ))}
-        </ul>
-      </InfoBox>
-    )}
+    {essay['Attachments'] &&
+      parts.attachments && (
+        <InfoBox name="Attachments">
+          <ul>
+            {essay['Attachments'].map((a, i) => (
+              <li key={i}>
+                <a href={a.url}>{a.filename}</a>
+              </li>
+            ))}
+          </ul>
+        </InfoBox>
+      )}
 
     <div style={{marginTop: '20px'}}>
       <Paragraph>{essay['Essay']}</Paragraph>
@@ -101,10 +104,14 @@ const Essay = ({essay}) => (
 const pageStyles = {
   fontFamily: 'Helvetica',
   maxWidth: '700px',
-  lineHeight: '1.3em'
+  lineHeight: '1.5em'
 };
 
-export async function generate({base, date}) {
+export async function generate({base, date, parts}) {
+  // base: airtable base
+  // date: Date object for timestamp
+  // parts: {written_for:bool, prompt:bool, brainstorming:bool, attachments:bool}
+
   // Fetch all essays
   const essays = await base('Writing')
     .select({
@@ -112,11 +119,22 @@ export async function generate({base, date}) {
     })
     .all();
 
-  // ...then fetch their requirements, adding to a _requirements key
-  // really nasty n+1 query.
+  // Fetch all requirements
+  const deliverables = await base('Deliverables')
+    .select()
+    .all();
+
+  // ...then attach essays to their requirements, adding to a _requirements key
   for (let essay of essays) {
-    essay.fields._requirements = await getRequirements(base, essay.fields);
+    const reqIds = essay.fields['Required By'];
+    if (reqIds === null) {
+      essay.fields._requirements = [];
+    } else {
+      essay.fields._requirements = deliverables.filter(e => reqIds.indexOf(e.id) !== -1);
+    }
   }
+
+  parts = parts || {prompt: true};
 
   const report = (
     <html>
@@ -127,7 +145,7 @@ export async function generate({base, date}) {
       <body style={pageStyles}>
         <TitlePage title="College Essays" date={date || new Date()} />
         {essays.filter(e => (e.fields['Essay'] || '').trim().length > 0).map(e => (
-          <Essay essay={e.fields} key={e.id} />
+          <Essay essay={e.fields} parts={parts} key={e.id} />
         ))}
       </body>
     </html>

@@ -84,7 +84,7 @@ class ListPage extends React.Component {
               onChange={e => this.setState({filter: e.target.value})}
             />
           </div>
-          <ExportButton base={base}>Export All</ExportButton>
+          <ExportButton base={base}>Export</ExportButton>
         </div>
         {loading && <Loading />}
         {!loading && (
