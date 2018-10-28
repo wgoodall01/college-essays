@@ -5,7 +5,9 @@
 }
 
 .Lint_item {
-  margin-bottom: 3px;
+  padding: 3px 0;
+  padding-left: 2px;
+  color: black;
 }
 
 .Lint_item:hover {
@@ -13,6 +15,17 @@
   cursor: pointer;
 }
 
-.Lint_text {
-  color: black;
+.Lint_item.Lint_item-error {
+  margin-left: -5px;
+  padding-left: 7px;
+  background: linear-gradient(to right, #da3c00, transparent);
+  color: white;
+}
+
+.Lint_text:after {
+  content: ' ';
+}
+
+.Lint_why {
+  opacity: 0.6;
 }
