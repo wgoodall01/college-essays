@@ -12,6 +12,7 @@ export class Textarea extends React.Component {
 
   static propTypes = {
     onChange: PropTypes.func,
+    onSelect: PropTypes.func,
     className: PropTypes.string,
     weakSelection: PropTypes.arrayOf(PropTypes.number),
     readOnly: PropTypes.bool,
@@ -86,6 +87,7 @@ export class Textarea extends React.Component {
         )}
         value={value}
         onChange={this._onInput}
+        onSelect={this._onSelect}
         onFocus={this._resize}
         {...rest}
       />

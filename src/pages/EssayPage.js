@@ -29,6 +29,7 @@ class EssayPage extends React.Component {
       loading: true, // essay is loading?
       pinExtras: false,
       weakSelection: [0, 0], // weak selection in essay
+      selectCount: null, // word count in selection
       dirty: false
     };
 
@@ -87,6 +88,17 @@ class EssayPage extends React.Component {
     const {essay} = this.state;
 
     this.setState({requirements: await getRequirements(base, essay)});
+  };
+
+  _onSelect = e => {
+    const {selectionStart, selectionEnd} = e.target;
+    const text = this.state.essay['Essay'];
+
+    if (selectionStart && selectionEnd !== selectionStart) {
+      this.setState({selectCount: wordCount(text.slice(selectionStart, selectionEnd))});
+    } else {
+      this.setState({selectCount: null});
+    }
   };
 
   // Save record max once every 1.5s.
@@ -176,7 +188,8 @@ class EssayPage extends React.Component {
 
               {essay['Essay'] && (
                 <Shade className="EssayPage_extra">
-                  {wordCount(this.state.essay['Essay'] || '')} words
+                  {wordCount(this.state.essay['Essay'] || '')}
+                  {this.state.selectCount && ` (${this.state.selectCount})`} words
                 </Shade>
               )}
             </div>
@@ -186,6 +199,7 @@ class EssayPage extends React.Component {
               placeholder="Once upon a time..."
               {...bindField('Essay')}
               weakSelection={weakSelection}
+              onSelect={this._onSelect}
             />
           </React.Fragment>
         )}
