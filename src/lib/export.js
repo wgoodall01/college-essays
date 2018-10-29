@@ -7,6 +7,16 @@ import {wordCount} from './wordCount.js';
 // This makes Word insert a page break.
 const PageBreak = () => <br style={{pageBreakBefore: 'always'}} />;
 
+// Page headings, etc.
+const Heading = ({children, tag, style, ...rest}) => {
+  const Container = tag || 'h1';
+  return (
+    <Container style={{fontWeight: 'normal', ...style}} {...rest}>
+      {children}
+    </Container>
+  );
+};
+
 // This paragraph-izes text.
 //   - First: replaces \n\n with a <p>
 //   - Second: replaces any \n with a <br>
@@ -28,7 +38,7 @@ const Paragraph = ({children}) => {
 
 const TitlePage = ({title, date}) => (
   <React.Fragment>
-    <h1 style={{marginTop: '300px'}}>{title}</h1>
+    <Heading style={{marginTop: '300px'}}>{title}</Heading>
     <p>
       on {date.toLocaleDateString()}, {date.toLocaleTimeString()}
     </p>
@@ -55,7 +65,7 @@ const InfoBox = ({children, name}) => (
 
 const Essay = ({essay, parts}) => (
   <React.Fragment>
-    <h1>{essay['Name']}</h1>
+    <Heading>{essay['Name']}</Heading>
 
     {essay._requirements.length > 0 &&
       parts.written_for && (
