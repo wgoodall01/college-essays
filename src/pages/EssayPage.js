@@ -94,7 +94,7 @@ class EssayPage extends React.Component {
     const {selectionStart, selectionEnd} = e.target;
     const text = this.state.essay['Essay'];
 
-    if (selectionStart && selectionEnd !== selectionStart) {
+    if (selectionEnd !== selectionStart) {
       this.setState({selectCount: wordCount(text.slice(selectionStart, selectionEnd))});
     } else {
       this.setState({selectCount: null});
