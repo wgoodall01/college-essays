@@ -5,8 +5,9 @@ import Shade from '../components/Shade.js';
 import ClearLink from '../components/ClearLink.js';
 import ExportButton from '../components/ExportButton.js';
 import {FontAwesomeIcon as Fa} from '@fortawesome/react-fontawesome';
-import {faSearch} from '@fortawesome/free-solid-svg-icons';
+import {faSearch, faLevelDownAlt} from '@fortawesome/free-solid-svg-icons';
 import {getEssays} from '../lib/db.js';
+import history from '../lib/history.js';
 import './ListPage.css';
 
 const filterPredicate = (filter, text) => {
@@ -33,6 +34,7 @@ const filterPredicate = (filter, text) => {
 class ListPage extends React.Component {
   state = {
     essays: [],
+    filteredEssays: null,
     filter: '',
     loading: true
   };
@@ -47,15 +49,39 @@ class ListPage extends React.Component {
     this.setState({loading: false, essays: res});
   };
 
+  _refilter = filter => {
+    const {essays} = this.state;
+    if (filter) {
+      this.setState({
+        filter,
+        filteredEssays: essays.filter(e => filterPredicate(filter, e.fields['Name']))
+      });
+    } else {
+      this.setState({
+        filter,
+        filteredEssays: null
+      });
+    }
+  };
+
+  _handleInputKey = e => {
+    const {filteredEssays} = this.state;
+    if (e.key === 'Enter' && filteredEssays !== null && filteredEssays.length >= 1) {
+      history.push(`/essay/${filteredEssays[0].id}`);
+    }
+  };
+
   componentDidMount() {
     this._fetchEssays();
   }
 
   render() {
     const {base} = this.props;
-    const {essays, loading, filter} = this.state;
+    const {essays, filteredEssays, loading, filter} = this.state;
 
-    const EssayCard = ({fields, id}) => (
+    const displayEssays = filteredEssays || essays;
+
+    const EssayCard = ({fields, id, enterToOpen}) => (
       <ClearLink className="ListPage_item" to={`/essay/${id}`}>
         <div className="ListPage_item">
           <h2>{fields['Name']}</h2>
@@ -63,6 +89,12 @@ class ListPage extends React.Component {
             <Shade>
               <p>{fields['Essay'].slice(0, 480)}</p>
             </Shade>
+          )}
+          {enterToOpen && (
+            <div className="ListPage_enter-to-open">
+              <Fa transform="rotate-270 flip-v" icon={faLevelDownAlt} />
+              Enter to open
+            </div>
           )}
         </div>
       </ClearLink>
@@ -78,7 +110,8 @@ class ListPage extends React.Component {
               className="ListPage_filter"
               placeholder="Filter..."
               value={filter}
-              onChange={e => this.setState({filter: e.target.value})}
+              onChange={e => this._refilter(e.target.value)}
+              onKeyPress={this._handleInputKey}
             />
           </div>
           <ExportButton base={base}>Export</ExportButton>
@@ -86,8 +119,13 @@ class ListPage extends React.Component {
         {loading && <Loading />}
         {!loading && (
           <React.Fragment>
-            {essays.filter(e => filterPredicate(filter, e.fields['Name'])).map(e => (
-              <EssayCard fields={e.fields} id={e.id} key={e.id} />
+            {displayEssays.map((e, i) => (
+              <EssayCard
+                fields={e.fields}
+                id={e.id}
+                enterToOpen={i === 0 && filter.length !== 0}
+                key={e.id}
+              />
             ))}
           </React.Fragment>
         )}
