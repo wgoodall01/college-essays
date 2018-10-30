@@ -2,7 +2,11 @@ import writeGood from 'write-good';
 
 export function lint(text) {
   // errors: [{index, offset, text, why, type:"warning"/"error"}]
-  const allErrors = [...errorsWriteGood(text), ...errorsDetectTK(text)];
+  const allErrors = [
+    ...errorsWriteGood(text),
+    ...errorsDetectTK(text),
+    ...errorsDetectTODO(text)
+  ];
   allErrors.sort((a, b) => a.index - b.index);
   return allErrors;
 }
@@ -24,6 +28,25 @@ function errorsDetectTK(text) {
 
   return errors;
 }
+
+function errorsDetectTODO(text) {
+  const errors = [];
+
+  const regex = /TODO/g;
+
+  for (let match = regex.exec(text); match; match = regex.exec(text)) {
+    errors.push({
+      index: match.index,
+      offset: 4, // "TODO".length == 4,
+      text: 'TODO',
+      why: 'included in writing',
+      type: 'error'
+    });
+  }
+
+  return errors;
+}
+
 
 function errorsWriteGood(text) {
   const errors = writeGood(text);
