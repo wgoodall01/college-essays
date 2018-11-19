@@ -5,10 +5,29 @@ export function lint(text) {
   const allErrors = [
     ...errorsWriteGood(text),
     ...errorsDetectTK(text),
-    ...errorsDetectTODO(text)
+    ...errorsDetectTODO(text),
+    ...errorsDetectTwospace(text)
   ];
   allErrors.sort((a, b) => a.index - b.index);
   return allErrors;
+}
+
+function errorsDetectTwospace(text) {
+  const errors = [];
+
+  const regex = /(  +)/g;
+
+  for (let match = regex.exec(text); match; match = regex.exec(text)) {
+    errors.push({
+      index: match.index,
+      offset: match[1].length,
+      text: `"${match[1]}"`,
+      why: 'includes two spaces after punctuation',
+      type: 'error'
+    });
+  }
+
+  return errors;
 }
 
 function errorsDetectTK(text) {
@@ -46,7 +65,6 @@ function errorsDetectTODO(text) {
 
   return errors;
 }
-
 
 function errorsWriteGood(text) {
   const errors = writeGood(text);
