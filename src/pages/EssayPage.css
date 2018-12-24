@@ -41,6 +41,6 @@
     display: none;
   }
   .EssayPage_sticky-extras {
-    position: block !important;
+    position: unset !important;
   }
 }
