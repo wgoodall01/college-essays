@@ -40,4 +40,7 @@
   .EssayPage_hide-print {
     display: none;
   }
+  .EssayPage_sticky-extras {
+    position: unset !important;
+  }
 }
