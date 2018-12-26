@@ -11,6 +11,7 @@ import Shade from '../components/Shade.js';
 import Loading from '../components/Loading.js';
 import Toggle from '../components/Toggle.js';
 import Lint from '../components/Lint.js';
+import Paragraph from '../lib/Paragraph.js';
 import Attachments from '../components/Attachments.js';
 import {Helmet} from 'react-helmet';
 import classnames from 'classnames';
@@ -194,6 +195,7 @@ class EssayPage extends React.Component {
               )}
             </div>
             <Textarea
+              className="EssayPage_hide-print"
               noBorder
               outset
               placeholder="Once upon a time..."
@@ -201,6 +203,9 @@ class EssayPage extends React.Component {
               weakSelection={weakSelection}
               onSelect={this._onSelect}
             />
+            <div className="EssayPage_hide-screen EssayPage_print-text-format">
+              <Paragraph>{this.state.essay['Essay']}</Paragraph>
+            </div>
           </React.Fragment>
         )}
       </div>

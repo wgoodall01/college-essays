@@ -33,9 +33,20 @@
   border-radius: 5px;
 }
 
+.EssayPage_hide-screen {
+  display: none;
+}
+
+.EssayPage_print-text-format {
+  line-height: 1.5em;
+}
+
 @media print {
   .EssayPage {
     margin-bottom: 0;
+  }
+  .EssayPage_hide-screen {
+    display: initial;
   }
   .EssayPage_hide-print {
     display: none;
