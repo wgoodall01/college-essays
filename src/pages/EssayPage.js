@@ -30,7 +30,7 @@ class EssayPage extends React.Component {
       loading: true, // essay is loading?
       pinExtras: false,
       weakSelection: [0, 0], // weak selection in essay
-      selectCount: null, // word count in selection
+      selected: null, // selected text
       dirty: false
     };
 
@@ -96,9 +96,9 @@ class EssayPage extends React.Component {
     const text = this.state.essay['Essay'];
 
     if (selectionEnd !== selectionStart) {
-      this.setState({selectCount: wordCount(text.slice(selectionStart, selectionEnd))});
+      this.setState({selected: text.slice(selectionStart, selectionEnd)});
     } else {
-      this.setState({selectCount: null});
+      this.setState({selected: null});
     }
   };
 
@@ -189,8 +189,19 @@ class EssayPage extends React.Component {
 
               {essay['Essay'] && (
                 <Shade className="EssayPage_extra">
-                  {wordCount(this.state.essay['Essay'] || '')}
-                  {this.state.selectCount && ` (${this.state.selectCount})`} words
+                  {essay['_count_by_character'] ? (
+                    <React.Fragment>
+                      {(this.state.essay['Essay'] || '').length}
+                      {this.state.selected && ` (${this.state.selected.length})`}
+                      {' chars'}
+                    </React.Fragment>
+                  ) : (
+                    <React.Fragment>
+                      {wordCount(this.state.essay['Essay'] || '')}
+                      {this.state.selected && ` (${wordCount(this.state.selected)})`}
+                      {' words'}
+                    </React.Fragment>
+                  )}
                 </Shade>
               )}
             </div>
